@@ -4,7 +4,7 @@ export interface IUser extends Document {
   email: string;
   username: string;
   passwordHash: string;
-  wishList: mongoose.Schema.Types.ObjectId[];
+  wishList: mongoose.Types.ObjectId[];
 }
 
 const UserSchema = new Schema<IUser>({
