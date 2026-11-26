@@ -14,4 +14,5 @@ const UserSchema = new Schema<IUser>({
   wishList: [{ type: mongoose.Schema.Types.ObjectId, ref: "Wish" }],
 })
 
-export default mongoose.model<IUser>("User", UserSchema);
+export const User = mongoose.model<IUser>("User", UserSchema);
+export default User;

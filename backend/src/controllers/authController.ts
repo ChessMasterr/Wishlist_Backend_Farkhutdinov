@@ -4,7 +4,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import UserModel from "../models/User";
 
-const register = async (req: Request, res: Response) => {
+const registerUser = async (req: Request, res: Response) => {
     try {
         const salt = await bcrypt.genSalt(10);
         const passwordHash = await bcrypt.hash(req.body.password, salt);
@@ -30,7 +30,7 @@ const register = async (req: Request, res: Response) => {
  
 }
 
-const login = async (req: Request, res: Response) => {
+const loginUser = async (req: Request, res: Response) => {
     try {
 
         const User = await UserModel.findOne({ email: req.body.email });
@@ -60,5 +60,11 @@ const login = async (req: Request, res: Response) => {
  
 }
 
+const logout = async (req: Request, res: Response) => {
 
-export { register, login }
+            res.status(200).json({message: "Вы вышли из аккаунта"});
+
+
+}
+
+export { registerUser, loginUser, logout }
