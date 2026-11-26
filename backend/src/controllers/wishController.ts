@@ -71,3 +71,34 @@ export const editWish = async (req: AuthRequest, res: Response): Promise<void> =
         res.status(500).json({ message: 'Server error.' });  
     }
   }
+
+
+  export const deleteWish = async (req: AuthRequest, res: Response): Promise<void> => {
+    try {
+        const wishId= req.params.id 
+        const userId = req.userId;
+    
+        if(!userId){
+            res.status(403).json({ message: "You don't have permission to delete this wish." });  
+            return; 
+        }
+    
+        const wish = await Wish.findById(wishId);
+        if(!wish){
+            res.status(404).json({message: 'Wish not found.' });  
+            return;  
+        }
+    
+        if(wish?.authorId.toString() !== userId){
+            res.status(403).json({ message: 'You are not authorized to delete this wish.' });  
+            return;  
+        }
+    
+        await Wish.findByIdAndDelete(wishId);
+        await User.findByIdAndUpdate(userId, { $pull: { wishList: wishId } });
+        res.status(200).json({ message: 'Wish deleted successfully.' }); 
+    } catch (error) {
+        res.status(500).json({ message: 'Server error.' });  
+    }
+  
+  }
